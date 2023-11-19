@@ -828,7 +828,7 @@ conversation_handler_complaint = ConversationHandler(
 
 # ------------------------------------------------------------------------------------------------
 # Query Conversation
-QUERY_OPTION, QUERY_ID, QUERY_ACTION, QUERY_FACULTY, QUERY_SUBJECT, QUERY_MESSAGE = range(18, 23)
+QUERY_OPTION, QUERY_ID, QUERY_ACTION, QUERY_FACULTY, QUERY_SUBJECT, QUERY_MESSAGE = range(18, 24)
 
 async def query(update: Update, context: CallbackContext):
     user = db.get_user(str(update.message.chat_id))
@@ -1111,7 +1111,7 @@ conversation_handler_query = ConversationHandler(
 
 # ------------------------------------------------------------------------------------------------
 # Feedback Conversation
-FEEDBACK_OPTION, FEEDBACK_ID, FEEDBACK_ACTION, FEEDBACK_SUBJECT, FEEDBACK_MESSAGE = range(13, 28)
+FEEDBACK_OPTION, FEEDBACK_ID, FEEDBACK_ACTION, FEEDBACK_SUBJECT, FEEDBACK_MESSAGE = range(24, 29)
 
 async def feedback(update: Update, context: CallbackContext):
     user = db.get_user(str(update.message.chat_id))

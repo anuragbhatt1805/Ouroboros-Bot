@@ -8,11 +8,6 @@
     <img src="https://badgen.net/badge/SQLAlchemy/2.0.21/red?icon=sql">
     <img src="https://badgen.net/badge/PostgreSQL/16.1/blue?icon=postgresql">
     <img src="https://badgen.net/badge/Cloud/PostgreSQL-Database/green?icon=azure">
-    <!-- ![python](https://badgen.net/badge/Python/3.10/yellow?icon=python)
-    ![telegram](https://badgen.net/badge/Python-Telegram-Bot/v20.6/blue?icon=telegram)
-    ![ORM](https://badgen.net/badge/SQLAlchemy/2.0.21/red?icon=sql)
-    ![PostgreSQL](https://badgen.net/badge/PostgreSQL/16.1/blue?icon=postgresql)
-    ![Cloud](https://badgen.net/badge/Cloud/PostgreSQL-Database/green?icon=azure) -->
 </div>
 
 ---
@@ -52,7 +47,7 @@ Few main key features of project are as follow:-
 
 ---
 
-## Tech Stack
+## ⚒️ Tech Stack
 
 ### Telegram BotFather
 
@@ -131,27 +126,27 @@ SQLAlchemy's philosophy is SQL databases behave less like object collections as 
 
 ---
 
-## Meet the Team:-
+## 👨‍👨‍👦‍👦 Meet the Team:-
 
 **Anurag Bhatt**<br />
 *Team Lead & Developer*<br />
 Student, Dept. of CSE, HKBK<br />
-[Github: Anurag Bhatt](https://github.com/anuragbhatt1805)
+[Github: Anurag Bhatt🔗](https://github.com/anuragbhatt1805)
 
 **Ishan Kumar**<br />
 *Co-Developer & Debugger*<br />
 Student, Dept. of CSE, HKBK<br />
-[Github: Ishan Kumar](https://github.com/)
+[Github: Ishan Kumar🔗](https://github.com/)
 
 **Keerthana Ramesh Babu**<br />
 *Debugger & Tester*<br />
 Student, Dept. of CSE, HKBK<br />
-[Github: Ishan Kumar](https://github.com/)
+[Github: Keerthana Ramesh Babu🔗](https://github.com/)
 
 **Dr. Deepak NR**<br />
 *Team Guide*<br />
 Associate Professor, Dept. of CSE, HKBK<br />
-[Github: Anurag Bhatt](https://github.com/)
+[Github: Dr. Deepak N R🔗](https://github.com/)
 
 ---
 

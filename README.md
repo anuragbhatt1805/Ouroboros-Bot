@@ -24,6 +24,8 @@ It was developed for few of the following reasons:
 
 Teach Stack Used in Project is described later in the documentation.
 
+#### Telegram Bot Can be accessed at [HKBK Ouroboros Bot](https://t.me/HkbkOuroborosBot)
+
 ---
 
 ## 🎯 Key Features

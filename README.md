@@ -1,15 +1,14 @@
-# Ouroboros-Bot
-Telegram Bot named "Ouroboros Bot", designed by using python-telegram-bot, twillo, SQLAlchemy, pandas, for HKBK College of Engineering
-
 <div align="center">
   <h1>Ouroboros Bot 🤖</h1>
 </div>
 
-Programming Language :: Python :: 3.10
-Library :: python-telegram-bot :: v20.6
-ORM :: SQLAlchemy :: 2.0.21
-Database :: PostgreSQL :: 16.1
-Cloud :: Azure :: PostgreSQL Database
+<div align="center">
+    !\[python\](https://badgen.net/badge/Python/3.10/yellow?icon=python)
+    !\[telegram\](https://badgen.net/badge/Python-Telegram-Bot/v20.6/blue?icon=telegram)
+    !\[ORM\](https://badgen.net/badge/SQLAlchemy/2.0.21/red?icon=sql)
+    !\[PostgreSQL\](https://badgen.net/badge/PostgreSQL/16.1/blue?icon=postgresql)
+    !\[Cloud\](https://badgen.net/badge/Cloud/PostgreSQL Database/green?icon=azure)
+</div>
 
 ---
 
@@ -40,11 +39,11 @@ Few main key features of bot are as follows-
 
 ### Project Features
 Few main key features of project are as follow:-
- - Programming Language :: Python  python-telegram-bot library used for communication
- - ORM :: SQLAlchemy  SQLAlchemy library used for ORM connectivity with database
- - Database :: PostgreSQL  PostgreSQL database is used for storing data of bot.
- - Cloud :: Azure  PostgreSQL for Azure Database is used for hosting scalable database.
- - Cloud :: Private_Server College Server is used for deployment of bot application on web
+ - [Python-Telegram-Bot](https://pythontelegramrobot.readthedocs.io/en/latest/) library used for communication
+ - [SQLAlchemy](https://docs.sqlalchemy.org/en/20/) library used for ORM connectivity with database
+ - [PostgreSQL](https://www.postgresql.org/docs/current/release-16-1.html) database is used for storing data of bot.
+ - [PostgreSQL for Azure Database](https://azure.microsoft.com/en-us/services/postgresql/) is used for hosting scalable database.
+ - [College Server](#) is used for deployment of bot application on web
 
 ---
 
@@ -129,24 +128,24 @@ SQLAlchemy's philosophy is SQL databases behave less like object collections as 
 
 ## Meet the Team:-
 
-**Anurag Bhatt**
-*Team Lead & Developer*
-Student, Dept. of CSE, HKBK
+**Anurag Bhatt**<br />
+*Team Lead & Developer*<br />
+Student, Dept. of CSE, HKBK<br />
 [Github: Anurag Bhatt](https://github.com/anuragbhatt1805)
 
-**Ishan Kumar**
-*Co-Developer & Debugger*
-Student, Dept. of CSE, HKBK
+**Ishan Kumar**<br />
+*Co-Developer & Debugger*<br />
+Student, Dept. of CSE, HKBK<br />
 [Github: Ishan Kumar](https://github.com/)
 
-**Keerthana Ramesh Babu**
-*Debugger & Tester*
-Student, Dept. of CSE, HKBK
+**Keerthana Ramesh Babu**<br />
+*Debugger & Tester*<br />
+Student, Dept. of CSE, HKBK<br />
 [Github: Ishan Kumar](https://github.com/)
 
-**Dr. Deepak NR**
-*Team Guide*
-Associate Professor, Dept. of CSE, HKBK
+**Dr. Deepak NR**<br />
+*Team Guide*<br />
+Associate Professor, Dept. of CSE, HKBK<br />
 [Github: Anurag Bhatt](https://github.com/)
 
 ---

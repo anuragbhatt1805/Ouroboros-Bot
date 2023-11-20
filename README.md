@@ -131,22 +131,22 @@ SQLAlchemy's philosophy is SQL databases behave less like object collections as 
 **Anurag Bhatt**<br />
 *Team Lead & Developer*<br />
 Student, Dept. of CSE, HKBK<br />
-[Github: Anurag Bhatt🔗](https://github.com/anuragbhatt1805)
+[Github: Anurag Bhatt](https://github.com/anuragbhatt1805)🔗
 
 **Ishan Kumar**<br />
 *Co-Developer & Debugger*<br />
 Student, Dept. of CSE, HKBK<br />
-[Github: Ishan Kumar🔗](https://github.com/)
+[Github: Ishan Kumar](https://github.com/)🔗
 
 **Keerthana Ramesh Babu**<br />
 *Debugger & Tester*<br />
 Student, Dept. of CSE, HKBK<br />
-[Github: Keerthana Ramesh Babu🔗](https://github.com/)
+[Github: Keerthana Ramesh Babu](https://github.com/)🔗
 
 **Dr. Deepak NR**<br />
 *Team Guide*<br />
 Associate Professor, Dept. of CSE, HKBK<br />
-[Github: Dr. Deepak N R🔗](https://github.com/)
+[Github: Dr. Deepak N R](https://github.com/)🔗
 
 ---
 

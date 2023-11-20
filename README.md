@@ -3,11 +3,11 @@
 </div>
 
 <div align="center">
-    !\[python\](https://badgen.net/badge/Python/3.10/yellow?icon=python)
-    !\[telegram\](https://badgen.net/badge/Python-Telegram-Bot/v20.6/blue?icon=telegram)
-    !\[ORM\](https://badgen.net/badge/SQLAlchemy/2.0.21/red?icon=sql)
-    !\[PostgreSQL\](https://badgen.net/badge/PostgreSQL/16.1/blue?icon=postgresql)
-    !\[Cloud\](https://badgen.net/badge/Cloud/PostgreSQL Database/green?icon=azure)
+    ![python](https://badgen.net/badge/Python/3.10/yellow?icon=python)
+    ![telegram](https://badgen.net/badge/Python-Telegram-Bot/v20.6/blue?icon=telegram)
+    ![ORM](https://badgen.net/badge/SQLAlchemy/2.0.21/red?icon=sql)
+    ![PostgreSQL](https://badgen.net/badge/PostgreSQL/16.1/blue?icon=postgresql)
+    ![Cloud](https://badgen.net/badge/Cloud/PostgreSQL Database/green?icon=azure)
 </div>
 
 ---

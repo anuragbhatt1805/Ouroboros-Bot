@@ -64,8 +64,8 @@ async def handle_id(update: Update, context: CallbackContext):
             context.user_data['id'] = id
             otp = "".join(str(random.randrange(10)) for _ in range(6))
             db.add_verify_code(id=id, user_id=context.user_data['user_id'], code=otp)
-            print(otp)
-            # send_otp(id)
+            # print(otp)
+            await send_otp(mobile=user.mobile, code=otp)
         await update.message.reply_text(f"Your ID is {id}. Please enter your OTP:")
         return START_OTP_INPUT
     except Exception as e:

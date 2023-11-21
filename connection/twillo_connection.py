@@ -11,15 +11,18 @@ message_sid = os.environ['TWILIO_MESSAGE_SID']
 
 client = Client(account_sid, auth_token)
 
-def send_otp(mobile, code):
+async def send_otp(mobile, code):
     try:
-        message = client.messages.create(
+        if len(mobile) == 10:
+            mobile = "+91" + mobile
+        message = await client.messages.create(
                         messaging_service_sid=message_sid,
                         body=f"Your Verification Code is {code}",
                         to=mobile
                     )
+        # print(message.sid)
 
-        return message.sid["status"]
+        return True
     except Exception as e:
         print(e)
         return "failed"

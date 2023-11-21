@@ -123,8 +123,8 @@ celerybeat.pid
 *.sage.py
 
 # Environments
-connection/credentials.env
-.env
+# connection/credentials.env
+# .env
 .venv
 env/
 venv/

@@ -5,6 +5,7 @@ from models import User, Student, Teacher, Complaint, Query, Feedback, Status, A
 def add_student(id, name, mobile, sem, sec):
     try:
         with get_db() as db:
+            print(mobile,"===========================")
             db.add(User(id=id, name=name, mobile=mobile, user_type=Account.student))
             db.commit()
             db.add(Student(id=id, sem=sem, sec=sec))

@@ -310,7 +310,7 @@ async def handle_stud_add(update:Update, context:CallbackContext):
             data.replace('', None, inplace=True)
             for index, row in data.iterrows():
                 res = db.add_student(id=row['usn'], name=row['name'],
-                            mobile=['mobile'], sem=row['sem'], sec=row['sec'])
+                            mobile=row['mobile'], sem=row['sem'], sec=row['sec'])
                 if res is not None:
                     usn.append(res)
             if len(usn) > 0:
@@ -341,7 +341,7 @@ async def handle_stud_update(update:Update, context:CallbackContext):
             data.replace('', None, inplace=True)
             for index, row in data.iterrows():
                 res = await db.update_student(id=row['usn'], name=row['name'],
-                            mobile=['mobile'], sem=row['sem'], sec=row['sec'])
+                            mobile=row['mobile'], sem=row['sem'], sec=row['sec'])
                 if res is not None:
                     usn.append(res)
             if len(usn) > 0:
@@ -507,7 +507,7 @@ async def handle_teach_add(update:Update, context:CallbackContext):
             data.replace('', None, inplace=True)
             for index, row in data.iterrows():
                 res = await db.add_teacher(id=row['staff_id'], name=row['name'],
-                            mobile=['mobile'], branch=row['branch'])
+                            mobile=row['mobile'], branch=row['branch'])
                 if res is not None:
                     staff.append(res)
             if len(staff) > 0:
@@ -537,7 +537,7 @@ async def handle_teach_update(update:Update, context:CallbackContext):
             data.replace('', None, inplace=True)
             for index, row in data.iterrows():
                 res = await db.update_teacher(id=row['staff_id'], name=row['name'],
-                            mobile=['mobile'], branch=row['branch'])
+                            mobile=row['mobile'], branch=row['branch'])
                 if res is not None:
                     staff.append(res)
             if len(staff) > 0:

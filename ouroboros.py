@@ -308,8 +308,8 @@ async def handle_stud_add(update:Update, context:CallbackContext):
             usn = []
             data = pd.read_csv(file_path, delimiter=',')
             data.replace('', None, inplace=True)
-            for index, row in data:
-                res = await db.add_student(id=row['usn'], name=row['name'],
+            for index, row in data.iterrows():
+                res = db.add_student(id=row['usn'], name=row['name'],
                             mobile=['mobile'], sem=row['sem'], sec=row['sec'])
                 if res is not None:
                     usn.append(res)
@@ -322,6 +322,7 @@ async def handle_stud_add(update:Update, context:CallbackContext):
                 await update.message.reply_text(f"All Students data added successfully")
             return ConversationHandler.END
     except Exception as e:
+        print(e)
         return ConversationHandler.END
 
 async def handle_stud_update(update:Update, context:CallbackContext):
@@ -338,7 +339,7 @@ async def handle_stud_update(update:Update, context:CallbackContext):
             usn = []
             data = pd.read_csv(file_path, delimiter=',')
             data.replace('', None, inplace=True)
-            for index, row in data:
+            for index, row in data.iterrows():
                 res = await db.update_student(id=row['usn'], name=row['name'],
                             mobile=['mobile'], sem=row['sem'], sec=row['sec'])
                 if res is not None:
@@ -388,7 +389,7 @@ async def handle_stud_change_csv(update:Update, context:CallbackContext):
             data = pd.read_csv(file_path, delimiter=',')
             data.replace('', None, inplace=True)
             if context.user_data["option"] == "promote":
-                for index, row in data:
+                for index, row in data.iterrows():
                     try:
                         db.promote_student(row['usn'])
                     except Exception as e:
@@ -401,7 +402,7 @@ async def handle_stud_change_csv(update:Update, context:CallbackContext):
                 else:
                     await update.message.reply_text(f"All Students are successfully promoted")
             elif context.user_data["option"] == "demote":
-                for index, row in data:
+                for index, row in data.iterrows():
                     try:
                         db.demote_student(row['usn'])
                     except Exception as e:
@@ -440,7 +441,7 @@ async def handle_stud_delete_csv(update:Update, context:CallbackContext):
             usn = []
             data = pd.read_csv(file_path, delimiter=',')
             data.replace('', None, inplace=True)
-            for index, row in data:
+            for index, row in data.iterrows():
                 try:
                     db.delete_student(row['usn'])
                 except Exception as e:
@@ -504,7 +505,7 @@ async def handle_teach_add(update:Update, context:CallbackContext):
             staff = []
             data = pd.read_csv(file_path, delimiter=',')
             data.replace('', None, inplace=True)
-            for index, row in data:
+            for index, row in data.iterrows():
                 res = await db.add_teacher(id=row['staff_id'], name=row['name'],
                             mobile=['mobile'], branch=row['branch'])
                 if res is not None:
@@ -534,7 +535,7 @@ async def handle_teach_update(update:Update, context:CallbackContext):
             staff = []
             data = pd.read_csv(file_path, delimiter=',')
             data.replace('', None, inplace=True)
-            for index, row in data:
+            for index, row in data.iterrows():
                 res = await db.update_teacher(id=row['staff_id'], name=row['name'],
                             mobile=['mobile'], branch=row['branch'])
                 if res is not None:
@@ -578,7 +579,7 @@ async def handle_teach_change_csv(update:Update, context:CallbackContext):
             data = pd.read_csv(file_path, delimiter=',')
             data.replace('', None, inplace=True)
             if context.user_data["option"] == "promote":
-                for index, row in data:
+                for index, row in data.iterrows():
                     try:
                         db.promote_teacher(row['staff_id'])
                     except Exception as e:
@@ -617,7 +618,7 @@ async def handle_teach_delete_csv(update:Update, context:CallbackContext):
             staff = []
             data = pd.read_csv(file_path, delimiter=',')
             data.replace('', None, inplace=True)
-            for index, row in data:
+            for index, row in data.iterrows():
                 try:
                     db.delete_teacher(row['staff_id'])
                 except Exception as e:

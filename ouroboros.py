@@ -55,7 +55,7 @@ async def start(update: Update, context: CallbackContext):
 
 async def handle_id(update: Update, context: CallbackContext):
     try:
-        id = str(update.message.text).strip()
+        id = str(update.message.text).strip().upper()
         user = db.get_user_by_id(id)
         if user is None:
             await update.message.reply_text("Invalid ID. Please enter a valid ID:")

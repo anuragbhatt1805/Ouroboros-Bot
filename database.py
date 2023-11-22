@@ -6,10 +6,12 @@ def add_student(id, name, mobile, sem, sec):
     try:
         with get_db() as db:
             db.add(User(id=id, name=name, mobile=mobile, user_type=Account.student))
+            db.commit()
             db.add(Student(id=id, sem=sem, sec=sec))
             db.commit()
         return None
-    except:
+    except Exception as e:
+        print(e)
         return id
 
 def get_student(user_id):
@@ -137,6 +139,7 @@ def add_teacher(id, name, mobile, branch):
     try:
         with get_db() as db:
             db.add(User(id=id, name=name, mobile=mobile, user_type=Account.teacher))
+            db.commit()
             db.add(Teacher(id=id, branch=branch))
             db.commit()
         return True

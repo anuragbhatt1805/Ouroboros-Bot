@@ -20,7 +20,8 @@ def get_student(user_id):
             student = db.query(Student, User).join(User, (User.id == Student.id))\
                 .filter(User.user_id == user_id).first()
             return student
-    except:
+    except Exception as e:
+        print(e)
         return None
 
 def get_student_detail(id):
@@ -29,7 +30,8 @@ def get_student_detail(id):
             student = db.query(Student, User).join(User, (User.id == Student.id))\
                 .filter(Student.id == id).first()
             return student
-    except:
+    except Exception as e:
+        print(e)
         return None
 
 def get_all_students(sem=None, sec=None):
@@ -507,13 +509,13 @@ def get_feedback(id):
     except:
         return None
 
-def get_feedbacks(user_id = None):
+def get_feedbacks(id = None):
     try:
         with get_db() as db:
-            if user_id is None:
+            if id is None:
                 feedbacks = db.query(Feedback).all()
             else:
-                feedbacks = db.query(Feedback).filter(Feedback.user == user_id).all()
+                feedbacks = db.query(Feedback).filter(Feedback.user == id).all()
             return feedbacks
     except Exception as e:
         return None

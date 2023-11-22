@@ -25,16 +25,126 @@ bot = Bot(token)
 # Sending Personal Message
 async def send_message_user(chat_id, message):
     try:
-        await bot.send_message(chat_id=chat_id, message=message)
+        await bot.send_message(chat_id=chat_id, text=message)
+    except Exception as e:
+        print(e)
+        return ConversationHandler.END
+
+# ------------------------------------------------------------------------------------------------
+### Code for Each Commands Starts Here
+
+# About Command Handler
+async def about_handler(update:Update, context:CallbackContext):
+    try:
+        await update.message.reply_text("I am Ouroboros Bot, Department of CSE, HKBKCE")
+        await update.message.reply_text("You can do a complaint directly to HoD, with full privacy and track updates on your registered complaint.")
+        await update.message.reply_text("You can ask your doubts to your facutly or mentor, and track what is the status of your doubt solution.")
+        await update.message.reply_text("Soon more updates will be given to bots...\
+            \nPlease help us to improve by giving your feedback at /feedback.")
+        await update.message.reply_text("For any help, use /help command.")
+        return ConversationHandler.END
     except:
         return ConversationHandler.END
 
-### Code for Each Commands Starts Here
+# Help Command Handler
+async def help_handler(update:Update, context:CallbackContext):
+    try:
+        user = db.get_user(str(update.message.chat_id))
+        if user is None:
+            await update.message.reply_text("Sorry, Can't find your information.")
+            await update.message.reply_text("Please register yourself using /start command.")
+            return ConversationHandler.END
+        await update.message.reply_text("Here, are the list of commands which you can use to help yourself out.")
+        if user.user_type == db.Account.student:
+            await update.message.reply_text("You can use following commands to interact with me:")
+            await update.message.reply_text("/me - To get your information")
+            await update.message.reply_text("/about - To get information about me")
+            await update.message.reply_text("/help - To get help related to commands")
+            await update.message.reply_text("/complaint - To perform operation related to complaint")
+            await update.message.reply_text("/query - To perform operation related to query")
+            await update.message.reply_text("/feedback - To give feedback to developer")
+        elif user.user_type == db.Account.teacher:
+            await update.message.reply_text("You can use following commands to interact with me:")
+            await update.message.reply_text("/me - To get your information")
+            await update.message.reply_text("/about - To get information about me")
+            await update.message.reply_text("/help - To get help related to commands")
+            await update.message.reply_text("/query - To perform operation related to query")
+            await update.message.reply_text("/feedback - To give feedback to developer")
+        elif user.user_type == db.Account.admin:
+            await update.message.reply_text("You can use following commands to interact with me:")
+            await update.message.reply_text("/me - To get your information")
+            await update.message.reply_text("/about - To get information about me")
+            await update.message.reply_text("/help - To get help related to commands")
+            await update.message.reply_text("/user - To access & Manipulate user information")
+            await update.message.reply_text("/complaint - To perform operation related to complaint")
+            await update.message.reply_text("/query - To perform operation related to query")
+            await update.message.reply_text("/feedback - To give feedback to developer")
+        return ConversationHandler.END
+    except Exception as e:
+        return ConversationHandler.END
+
+# Me Command Handler
+async def me_handler(update:Update, context:CallbackContext):
+    try:
+        user = db.get_user(str(update.message.chat_id))
+        if user is None:
+            await update.message.reply_text("Sorry, Can't find your information.")
+            await update.message.reply_text("Please register yourself using /start command.")
+            return ConversationHandler.END
+        await update.message.reply_text("Here, is what I got information about you")
+        if user.user_type == db.Account.student:
+            student, user = db.get_student(str(update.message.chat_id))
+            await update.message.reply_text(f"Student's:\
+                \n Name: {user.name}\
+                \n ID: {user.id}\
+                \n Mobile: {user.mobile}\
+                \n Level: {user.user_type}\
+                \n Semester: {student.sem}\
+                \n Section: {student.sec}")
+        elif user.user_type == db.Account.teacher:
+            teacher, user = db.get_teacher(str(update.message.chat_id))
+            await update.message.reply_text(f"Teacher's:\
+                \n Name: {user.name}\
+                \n ID: {user.id}\
+                \n Mobile: {user.mobile}\
+                \n Level: {user.user_type}\
+                \n Branch: {teacher.branch}")
+        elif user.user_type == db.Account.admin:
+            await update.message.reply_text(f"Administrator's:\
+                \n Name: {user.name}\
+                \n ID: {user.id}\
+                \n Mobile: {user.mobile}\
+                \n Level: {user.user_type}")
+        return ConversationHandler.END
+    except Exception as e:
+        return ConversationHandler.END
+
 
 # ------------------------------------------------------------------------------------------------
-# Start Conversation
+### Defined States
+
+# Start States
 START_ID_INPUT, START_OTP_INPUT = range(0, 2)
 
+# User States
+USER_TYPE_OPTION, USER_STUD_OPTION, USER_TEACH_OPTION= range(2, 5)
+STUD_ADD, STUD_UPDATE, STUD_CHANGE, STUD_DELETE = range(5, 9)
+TEACH_ADD, TEACH_UPDATE, TEACH_CHANGE, TEACH_DELETE = range(9, 13)
+
+# Complaints States
+COMPLAINT_OPTION, COMPLAINT_ID, COMPLAINT_ACTION, COMPLAINT_SUBJECT, COMPLAINT_MESSAGE = range(13, 18)
+
+# Query States
+QUERY_OPTION, QUERY_ID, QUERY_ACTION, QUERY_FACULTY, QUERY_SUBJECT, QUERY_MESSAGE = range(18, 24)
+
+# Feedback States
+FEEDBACK_OPTION, FEEDBACK_ID, FEEDBACK_ACTION, FEEDBACK_SUBJECT, FEEDBACK_MESSAGE = range(24, 29)
+
+
+# ------------------------------------------------------------------------------------------------
+### Code for Each Conversation Starts Here
+
+# Start Conversation
 async def start(update: Update, context: CallbackContext):
     try:
         await update.message.reply_text("Hello, I am Ouroboros Bot")
@@ -88,120 +198,8 @@ async def handle_otp(update: Update, context: CallbackContext):
     except Exception as e:
         return ConversationHandler.END
 
-conversation_handler_start = ConversationHandler(
-    name='start_conversation',
-    entry_points=[CommandHandler('start', start)],
-    states={
-        START_ID_INPUT : [
-            MessageHandler(filters.Regex("1[hH][kK][0-9]{2}[a-zA-Z]{2}[0-9]{3}"), handle_id),
-            MessageHandler(filters.Regex("[0-9]{5}"), handle_id)
-        ],
-        START_OTP_INPUT : [
-            MessageHandler(filters.Regex("[0-9]{6}"), handle_otp)
-        ]
-    },
-    fallbacks=[CommandHandler('cancel', ConversationHandler.END)]
-)
 
-
-# ------------------------------------------------------------------------------------------------
-# About Command Handler
-async def about_handler(update:Update, context:CallbackContext):
-    try:
-        await update.message.reply_text("I am Ouroboros Bot, Department of CSE, HKBKCE")
-        await update.message.reply_text("You can do a complaint directly to HoD, with full privacy and track updates on your registered complaint.")
-        await update.message.reply_text("You can ask your doubts to your facutly or mentor, and track what is the status of your doubt solution.")
-        await update.message.reply_text("Soon more updates will be given to bots...\
-            \nPlease help us to improve by giving your feedback at /feedback.")
-        await update.message.reply_text("For any help, use /help command.")
-        return ConversationHandler.END
-    except:
-        return ConversationHandler.END
-
-
-# ------------------------------------------------------------------------------------------------
-# Help Command Handler
-async def help_handler(update:Update, context:CallbackContext):
-    try:
-        user = db.get_user(str(update.message.chat_id))
-        if user is None:
-            await update.message.reply_text("Sorry, Can't find your information.")
-            await update.message.reply_text("Please register yourself using /start command.")
-            return ConversationHandler.END
-        await update.message.reply_text("Here, are the list of commands which you can use to help yourself out.")
-        if user.user_type == db.Account.student:
-            await update.message.reply_text("You can use following commands to interact with me:")
-            await update.message.reply_text("/me - To get your information")
-            await update.message.reply_text("/about - To get information about me")
-            await update.message.reply_text("/help - To get help related to commands")
-            await update.message.reply_text("/complaint - To perform operation related to complaint")
-            await update.message.reply_text("/query - To perform operation related to query")
-            await update.message.reply_text("/feedback - To give feedback to developer")
-        elif user.user_type == db.Account.teacher:
-            await update.message.reply_text("You can use following commands to interact with me:")
-            await update.message.reply_text("/me - To get your information")
-            await update.message.reply_text("/about - To get information about me")
-            await update.message.reply_text("/help - To get help related to commands")
-            await update.message.reply_text("/query - To perform operation related to query")
-            await update.message.reply_text("/feedback - To give feedback to developer")
-        elif user.user_type == db.Account.admin:
-            await update.message.reply_text("You can use following commands to interact with me:")
-            await update.message.reply_text("/me - To get your information")
-            await update.message.reply_text("/about - To get information about me")
-            await update.message.reply_text("/help - To get help related to commands")
-            await update.message.reply_text("/user - To access & Manipulate user information")
-            await update.message.reply_text("/complaint - To perform operation related to complaint")
-            await update.message.reply_text("/query - To perform operation related to query")
-            await update.message.reply_text("/feedback - To give feedback to developer")
-        return ConversationHandler.END
-    except Exception as e:
-        return ConversationHandler.END
-
-
-# ------------------------------------------------------------------------------------------------
-# Me Command Handler
-async def me_handler(update:Update, context:CallbackContext):
-    try:
-        user = db.get_user(str(update.message.chat_id))
-        if user is None:
-            await update.message.reply_text("Sorry, Can't find your information.")
-            await update.message.reply_text("Please register yourself using /start command.")
-            return ConversationHandler.END
-        await update.message.reply_text("Here, is what I got information about you")
-        if user.user_type == db.Account.student:
-            student, user = db.get_student(str(update.message.chat_id))
-            await update.message.reply_text(f"Student's:\
-                \n Name: {user.name}\
-                \n ID: {user.id}\
-                \n Mobile: {user.mobile}\
-                \n Level: {user.user_type}\
-                \n Semester: {student.sem}\
-                \n Section: {student.sec}")
-        elif user.user_type == db.Account.teacher:
-            teacher, user = db.get_teacher(str(update.message.chat_id))
-            await update.message.reply_text(f"Teacher's:\
-                \n Name: {user.name}\
-                \n ID: {user.id}\
-                \n Mobile: {user.mobile}\
-                \n Level: {user.user_type}\
-                \n Branch: {teacher.branch}")
-        elif user.user_type == db.Account.admin:
-            await update.message.reply_text(f"Administrator's:\
-                \n Name: {user.name}\
-                \n ID: {user.id}\
-                \n Mobile: {user.mobile}\
-                \n Level: {user.user_type}")
-        return ConversationHandler.END
-    except Exception as e:
-        return ConversationHandler.END
-
-
-# ------------------------------------------------------------------------------------------------
 # User Command Handler
-USER_TYPE_OPTION, USER_STUD_OPTION, USER_TEACH_OPTION= range(2, 5)
-STUD_ADD, STUD_UPDATE, STUD_CHANGE, STUD_DELETE = range(5, 9)
-TEACH_ADD, TEACH_UPDATE, TEACH_CHANGE, TEACH_DELETE = range(9, 13)
-
 async def admin_user(update: Update, context:CallbackContext):
     try:
         user = db.get_user(str(update.message.chat_id))
@@ -634,58 +632,8 @@ async def handle_teach_delete_csv(update:Update, context:CallbackContext):
     except Exception as e:
         return ConversationHandler.END
 
-conversation_handler_user = ConversationHandler(
-    name='user_conversation',
-    entry_points=[CommandHandler('user', admin_user)],
-    states={
-        USER_TYPE_OPTION: [
-            CallbackQueryHandler(handle_user_type_option)
-        ],
-        USER_STUD_OPTION: [
-            CallbackQueryHandler(handle_user_stud_option)
-        ],
-        USER_TEACH_OPTION: [
-            CallbackQueryHandler(handle_user_teach_option)
-        ],
-        STUD_ADD: [
-            MessageHandler(filters.Document.MimeType("text/comma-separated-values"), handle_stud_add)
-        ],
-        STUD_UPDATE: [
-            MessageHandler(filters.Document.MimeType("text/comma-separated-values"), handle_stud_update)
-        ],
-        STUD_CHANGE: [
-            MessageHandler(filters.Regex(".*"), handle_stud_change),
-            MessageHandler(filters.Document.MimeType("text/comma-separated-values"), handle_stud_change_csv)
-        ],
-        STUD_DELETE: [
-            MessageHandler(filters.Regex(".*"), handle_stud_delete),
-            MessageHandler(filters.Document.MimeType("text/comma-separated-values"), handle_stud_delete_csv)
-        ],
-        TEACH_ADD: [
-            MessageHandler(filters.Document.MimeType("text/comma-separated-values"), handle_teach_add)
-        ],
-        TEACH_UPDATE: [
-            MessageHandler(filters.Document.MimeType("text/comma-separated-values"), handle_teach_update)
-        ],
-        TEACH_CHANGE: [
-            MessageHandler(filters.Regex(".*"), handle_teach_change),
-            MessageHandler(filters.Document.MimeType("text/comma-separated-values"), handle_teach_change)
-        ],
-        TEACH_DELETE: [
-            MessageHandler(filters.Regex(".*"), handle_teach_delete),
-            MessageHandler(filters.Document.MimeType("text/comma-separated-values"), handle_teach_delete)
-        ]
-    },
-    fallbacks=[
-        CommandHandler('cancel', ConversationHandler.END)
-    ]
-)
 
-
-# ------------------------------------------------------------------------------------------------
 # Complaint Conversation
-COMPLAINT_OPTION, COMPLAINT_ID, COMPLAINT_ACTION, COMPLAINT_SUBJECT, COMPLAINT_MESSAGE = range(13, 18)
-
 async def complaint(update: Update, context: CallbackContext):
     try:
         user = db.get_user(str(update.message.chat_id))
@@ -770,7 +718,8 @@ async def handle_complaint_option(update: Update, context:CallbackContext):
         else:
             query = update.callback_query
             if context.user_data["option"] == "user-all":
-                complaints = db.get_complaints(str(update.callback_query.message.chat_id))
+                user = db.get_user(str(update.callback_query.message.chat_id))
+                complaints = db.get_complaints(str(user.id))
                 keyboard = [
                     [InlineKeyboardButton(text=f"Subject: {complaint.subject}\nStatus:{complaint.status}",
                                         callback_data=complaint.id)]
@@ -883,42 +832,15 @@ async def handle_complaint_message(update: Update, context: CallbackContext):
                 \nComplainer Level: {user.user_type}\
                 \nComplaint Subject: {context.user_data['comp_subject']}\
                 \nComplaint Message: {context.user_data['comp_message']}"
-            send_message_user(admin.user_id, message)
+            await send_message_user(admin.user_id, message)
             await update.message.reply_text("Your Complaint is sent to HoD!")
         return ConversationHandler.END
     except Exception as e:
         return ConversationHandler.END
 
-conversation_handler_complaint = ConversationHandler(
-    name='complaint_conversation',
-    entry_points=[CommandHandler('complaint', complaint)],
-    states={
-        COMPLAINT_OPTION: [
-            CallbackQueryHandler(handle_complaint_option)
-        ],
-        COMPLAINT_ACTION: [
-            CallbackQueryHandler(handle_complaint_action)
-        ],
-        COMPLAINT_ID: [
-            CallbackQueryHandler(handle_complaint_id)
-        ],
-        COMPLAINT_SUBJECT : [
-            MessageHandler(filters.Regex(".*"), handle_complaint_subject)
-        ],
-        COMPLAINT_MESSAGE : [
-            MessageHandler(filters.Regex(".*"), handle_complaint_message)
-        ]
-    },
-    fallbacks=[
-        CommandHandler('cancel', ConversationHandler.END)
-    ]
-)
 
 
-# ------------------------------------------------------------------------------------------------
 # Query Conversation
-QUERY_OPTION, QUERY_ID, QUERY_ACTION, QUERY_FACULTY, QUERY_SUBJECT, QUERY_MESSAGE = range(18, 24)
-
 async def query(update: Update, context: CallbackContext):
     try:
         user = db.get_user(str(update.message.chat_id))
@@ -1183,45 +1105,15 @@ async def handle_query_message(update: Update, context: CallbackContext):
                 \nStudent Section: {student.sec}\
                 \nQuery Subject: {context.user_data['query_subject']}\
                 \nQuery Message: {context.user_data['query_message']}"
-            send_message_user(teacher.user_id, message=message)
+            await send_message_user(teacher.user_id, message=message)
             await update.message.reply_text("Your Query is sent to faculty")
         return ConversationHandler.END
     except Exception as e:
         return ConversationHandler.END
 
-conversation_handler_query = ConversationHandler(
-    name='query_conversation',
-    entry_points=[CommandHandler('query', query)],
-    states={
-        QUERY_OPTION: [
-            CallbackQueryHandler(handle_query_option)
-        ],
-        QUERY_ID: [
-            CallbackQueryHandler(handle_query_id)
-        ],
-        QUERY_ACTION: [
-            CallbackQueryHandler(handle_query_action)
-        ],
-        QUERY_FACULTY: [
-            CallbackQueryHandler(handle_query_faculty)
-        ],
-        QUERY_SUBJECT : [
-            MessageHandler(filters.Regex(".*"), handle_query_subject)
-        ],
-        QUERY_MESSAGE : [
-            MessageHandler(filters.Regex(".*"), handle_query_message)
-        ]
-    },
-    fallbacks=[
-        CommandHandler('cancel', ConversationHandler.END)
-    ]
-)
 
 
-# ------------------------------------------------------------------------------------------------
 # Feedback Conversation
-FEEDBACK_OPTION, FEEDBACK_ID, FEEDBACK_ACTION, FEEDBACK_SUBJECT, FEEDBACK_MESSAGE = range(24, 29)
-
 async def feedback(update: Update, context: CallbackContext):
     try:
         user = db.get_user(str(update.message.chat_id))
@@ -1266,12 +1158,13 @@ async def handle_feedback_option(update: Update, context:CallbackContext):
                 else:
                     await query.edit_message_text("Please Select Feedback:")
                     await query.edit_message_reply_markup(reply_markup=reply_markup)
-                return COMPLAINT_ID
+                return FEEDBACK_ID
 
         else:
             query = update.callback_query
             if context.user_data["option"] == "user-all":
-                feedbacks = db.get_feedbacks(str(update.callback_query.message.chat_id))
+                user = db.get_user(str(update.callback_query.message.chat_id))
+                feedbacks = db.get_feedbacks(str(user.id))
                 keyboard = [
                     [InlineKeyboardButton(text=f"Subject: {feedback.subject}",
                                         callback_data=feedback.id)]
@@ -1283,7 +1176,7 @@ async def handle_feedback_option(update: Update, context:CallbackContext):
                 else:
                     await query.edit_message_text("Please Select Feedback:")
                     await query.edit_message_reply_markup(reply_markup=reply_markup)
-                return COMPLAINT_ID
+                return FEEDBACK_ID
 
             elif context.user_data["option"] == "user-new":
                 await update.callback_query.message.reply_text("Enter Subject for your Feedback:")
@@ -1313,7 +1206,7 @@ async def handle_feedback_id(update: Update, context: CallbackContext):
         query = update.callback_query
         await query.edit_message_text(message)
         await query.edit_message_reply_markup(reply_markup=reply_markup)
-        return COMPLAINT_ACTION
+        return FEEDBACK_ACTION
     except Exception as e:
         return ConversationHandler.END
 
@@ -1357,12 +1250,171 @@ async def handle_feedback_message(update: Update, context: CallbackContext):
                 \nUser Level: {user.user_type}\
                 \nFeedback Subject: {context.user_data['feed_subject']}\
                 \nFeedback Message: {context.user_data['feed_message']}"
-            send_message_user(admin.user_id, message)
+            await send_message_user(admin.user_id, message)
             await update.message.reply_text("Your Feedback is sent to Developer!")
         return ConversationHandler.END
     except Exception as e:
+        print(e)
         return ConversationHandler.END
 
+
+# ------------------------------------------------------------------------------------------------
+### Convesation Handlers for each Conversation Handler
+
+# Start Conversation
+conversation_handler_start = ConversationHandler(
+    name='start_conversation',
+    entry_points=[CommandHandler('start', start)],
+    states={
+        START_ID_INPUT : [
+            MessageHandler(filters.Regex("1[hH][kK][0-9]{2}[a-zA-Z]{2}[0-9]{3}"), handle_id),
+            MessageHandler(filters.Regex("[0-9]{5}"), handle_id)
+        ],
+        START_OTP_INPUT : [
+            MessageHandler(filters.Regex("[0-9]{6}"), handle_otp)
+        ]
+    },
+    fallbacks=[
+        CommandHandler('start', start),
+        CommandHandler('user', admin_user),
+        CommandHandler('complaint', complaint),
+        CommandHandler('query', query),
+        CommandHandler('feedback', feedback),
+        CommandHandler('about', about_handler),
+        CommandHandler('help', help_handler),
+        CommandHandler('me', me_handler),
+        CommandHandler('cancel', ConversationHandler.END),
+    ]
+)
+
+# User Conversation
+conversation_handler_user = ConversationHandler(
+    name='user_conversation',
+    entry_points=[CommandHandler('user', admin_user)],
+    states={
+        USER_TYPE_OPTION: [
+            CallbackQueryHandler(handle_user_type_option)
+        ],
+        USER_STUD_OPTION: [
+            CallbackQueryHandler(handle_user_stud_option)
+        ],
+        USER_TEACH_OPTION: [
+            CallbackQueryHandler(handle_user_teach_option)
+        ],
+        STUD_ADD: [
+            MessageHandler(filters.Document.MimeType("text/comma-separated-values"), handle_stud_add)
+        ],
+        STUD_UPDATE: [
+            MessageHandler(filters.Document.MimeType("text/comma-separated-values"), handle_stud_update)
+        ],
+        STUD_CHANGE: [
+            MessageHandler(filters.Regex(".*"), handle_stud_change),
+            MessageHandler(filters.Document.MimeType("text/comma-separated-values"), handle_stud_change_csv)
+        ],
+        STUD_DELETE: [
+            MessageHandler(filters.Regex(".*"), handle_stud_delete),
+            MessageHandler(filters.Document.MimeType("text/comma-separated-values"), handle_stud_delete_csv)
+        ],
+        TEACH_ADD: [
+            MessageHandler(filters.Document.MimeType("text/comma-separated-values"), handle_teach_add)
+        ],
+        TEACH_UPDATE: [
+            MessageHandler(filters.Document.MimeType("text/comma-separated-values"), handle_teach_update)
+        ],
+        TEACH_CHANGE: [
+            MessageHandler(filters.Regex(".*"), handle_teach_change),
+            MessageHandler(filters.Document.MimeType("text/comma-separated-values"), handle_teach_change)
+        ],
+        TEACH_DELETE: [
+            MessageHandler(filters.Regex(".*"), handle_teach_delete),
+            MessageHandler(filters.Document.MimeType("text/comma-separated-values"), handle_teach_delete)
+        ]
+    },
+    fallbacks=[
+        CommandHandler('start', start),
+        CommandHandler('user', admin_user),
+        CommandHandler('complaint', complaint),
+        CommandHandler('query', query),
+        CommandHandler('feedback', feedback),
+        CommandHandler('about', about_handler),
+        CommandHandler('help', help_handler),
+        CommandHandler('me', me_handler),
+        CommandHandler('cancel', ConversationHandler.END),
+    ]
+)
+
+# Complaint Conversation
+conversation_handler_complaint = ConversationHandler(
+    name='complaint_conversation',
+    entry_points=[CommandHandler('complaint', complaint)],
+    states={
+        COMPLAINT_OPTION: [
+            CallbackQueryHandler(handle_complaint_option)
+        ],
+        COMPLAINT_ACTION: [
+            CallbackQueryHandler(handle_complaint_action)
+        ],
+        COMPLAINT_ID: [
+            CallbackQueryHandler(handle_complaint_id)
+        ],
+        COMPLAINT_SUBJECT : [
+            MessageHandler(filters.Regex(".*"), handle_complaint_subject)
+        ],
+        COMPLAINT_MESSAGE : [
+            MessageHandler(filters.Regex(".*"), handle_complaint_message)
+        ]
+    },
+    fallbacks=[
+        CommandHandler('start', start),
+        CommandHandler('user', admin_user),
+        CommandHandler('complaint', complaint),
+        CommandHandler('query', query),
+        CommandHandler('feedback', feedback),
+        CommandHandler('about', about_handler),
+        CommandHandler('help', help_handler),
+        CommandHandler('me', me_handler),
+        CommandHandler('cancel', ConversationHandler.END),
+    ]
+)
+
+# Query Conversation
+conversation_handler_query = ConversationHandler(
+    name='query_conversation',
+    entry_points=[CommandHandler('query', query)],
+    states={
+        QUERY_OPTION: [
+            CallbackQueryHandler(handle_query_option)
+        ],
+        QUERY_ID: [
+            CallbackQueryHandler(handle_query_id)
+        ],
+        QUERY_ACTION: [
+            CallbackQueryHandler(handle_query_action)
+        ],
+        QUERY_FACULTY: [
+            CallbackQueryHandler(handle_query_faculty)
+        ],
+        QUERY_SUBJECT : [
+            MessageHandler(filters.Regex(".*"), handle_query_subject)
+        ],
+        QUERY_MESSAGE : [
+            MessageHandler(filters.Regex(".*"), handle_query_message)
+        ]
+    },
+    fallbacks=[
+        CommandHandler('start', start),
+        CommandHandler('user', admin_user),
+        CommandHandler('complaint', complaint),
+        CommandHandler('query', query),
+        CommandHandler('feedback', feedback),
+        CommandHandler('about', about_handler),
+        CommandHandler('help', help_handler),
+        CommandHandler('me', me_handler),
+        CommandHandler('cancel', ConversationHandler.END),
+    ]
+)
+
+# Feedback Conversation
 conversation_handler_feedback = ConversationHandler(
     name='feedback_conversation',
     entry_points=[CommandHandler('feedback', feedback)],
@@ -1384,7 +1436,15 @@ conversation_handler_feedback = ConversationHandler(
         ]
     },
     fallbacks=[
-        CommandHandler('cancel', ConversationHandler.END)
+        CommandHandler('start', start),
+        CommandHandler('user', admin_user),
+        CommandHandler('complaint', complaint),
+        CommandHandler('query', query),
+        CommandHandler('feedback', feedback),
+        CommandHandler('about', about_handler),
+        CommandHandler('help', help_handler),
+        CommandHandler('me', me_handler),
+        CommandHandler('cancel', ConversationHandler.END),
     ]
 )
 

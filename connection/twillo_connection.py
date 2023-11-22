@@ -15,12 +15,12 @@ async def send_otp(mobile, code):
     try:
         if len(mobile) == 10:
             mobile = "+91" + mobile
-        message = await client.messages.create(
+        message = client.messages.create(
                         messaging_service_sid=message_sid,
                         body=f"Your Verification Code is {code}",
                         to=mobile
                     )
-        # print(message.sid)
+        print(message.sid)
 
         return True
     except Exception as e:

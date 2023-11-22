@@ -1062,14 +1062,13 @@ async def handle_query_option(update: Update, context:CallbackContext):
                     await query.edit_message_text("Please Select Query:")
                     await query.edit_message_reply_markup(reply_markup=reply_markup)
 
-        elif context.user_data["option"] == "stud-new":
-            await update.callback_query.message.reply_text("Please Select Faculty from the list:")
-            teachers = db.get_all_verified_teachers()
-            keyboard = [[InlineKeyboardButton(text=teacher.name, callback_data=teacher.id)] for teacher in teachers]
-            reply_markup = InlineKeyboardMarkup(keyboard)
-            await query.edit_message_text("Please Select Faculty from the list:")
-            await query.edit_message_reply_markup(reply_markup=reply_markup)
-            return QUERY_FACULTY
+            elif context.user_data["option"] == "stud-new":
+                teachers = db.get_all_verified_teachers()
+                keyboard = [[InlineKeyboardButton(text=teacher.name, callback_data=teacher.id)] for teacher in teachers]
+                reply_markup = InlineKeyboardMarkup(keyboard)
+                await query.edit_message_text("Please Select Faculty from the list:")
+                await query.edit_message_reply_markup(reply_markup=reply_markup)
+                return QUERY_FACULTY
         return QUERY_ID
     except Exception as e:
         return ConversationHandler.END

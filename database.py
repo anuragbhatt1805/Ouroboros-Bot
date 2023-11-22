@@ -172,6 +172,7 @@ def get_all_verified_teachers():
                 User.user_type == str(Account.teacher)).all()
             return teachers
     except Exception as e:
+        print(e)
         return None
 
 def get_all_teachers(branch=None):

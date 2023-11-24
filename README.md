@@ -128,6 +128,15 @@ SQLAlchemy's philosophy is SQL databases behave less like object collections as 
 
 ---
 
+## 🔮Future Updates 🔜
+
+ - 👨‍👩‍👧 Parents Connections Features
+ - 🏗️ Support for Students Projects
+ - 📖 Dictionaries for Technical Terms
+ - 🚀 Placement & Industry Information
+
+---
+
 ## 👨‍👨‍👦‍👦 Meet the Team:-
 
 **Anurag Bhatt**<br />

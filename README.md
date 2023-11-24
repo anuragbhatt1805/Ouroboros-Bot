@@ -137,7 +137,7 @@ SQLAlchemy's philosophy is SQL databases behave less like object collections as 
 
 ---
 
-## 👨‍👨‍👦‍👦 Meet the Team:-
+## 👬 Meet the Team:-
 
 **Anurag Bhatt**<br />
 *Team Lead & Developer*<br />

@@ -158,7 +158,7 @@ async def start(update: Update, context: CallbackContext):
             return ConversationHandler.END
         else:
             await update.message.reply_text("Oops! I guess you are not registered yet.")
-            await update.message.reply_text("Please enter your ID:")
+            await update.message.reply_text("Please enter your USN/Staff Id:")
             return START_ID_INPUT
     except Exception as e:
         return ConversationHandler.END
@@ -172,6 +172,9 @@ async def handle_id(update: Update, context: CallbackContext):
             return START_ID_INPUT
         else:
             context.user_data['id'] = id
+            if db.get_user_by_id(id)is not None:
+                await update.message.reply_text("User is already registered.\nPlease enter Correct ID")
+                return START_ID_INPUT
             otp = "".join(str(random.randrange(10)) for _ in range(6))
             db.add_verify_code(id=id, user_id=context.user_data['user_id'], code=otp)
             # print(otp)
@@ -482,14 +485,14 @@ async def handle_user_teach_option(update:Update, context:CallbackContext):
             file = f"{os.getcwd()}/uploads/teacher.csv"
             await query.message.reply_document(document=open(file, "rb"), filename="promote_teacher.csv")
             await query.message.reply_text("Please Keep the header row, and send the data in csv format")
-            await query.message.reply_text("If you want to promote only one faculty, then enter its usn:")
+            await query.message.reply_text("If you want to promote only one faculty, then enter its staff ID:")
             return TEACH_CHANGE
         elif context.user_data["option"] == "delete":
             await query.message.reply_text("Here is a template for deleting faculty to previous semester:")
             file = f"{os.getcwd()}/uploads/teacher.csv"
             await query.message.reply_document(document=open(file, "rb"), filename="promote_teacher.csv")
             await query.message.reply_text("Please Keep the header row, and send the data in csv format")
-            await query.message.reply_text("If you want to delete only one faculty, then enter its usn:")
+            await query.message.reply_text("If you want to delete only one faculty, then enter its Staff ID:")
             return TEACH_CHANGE
     except Exception as e:
         return ConversationHandler.END

@@ -156,7 +156,7 @@ Student, Dept. of CSE, HKBK<br />
 
 **Dr. Deepak NR**<br />
 *Team Guide*<br />
-Associate Professor, Dept. of CSE, HKBK<br />
+Professor, Dept. of CSE, HKBK<br />
 [Github: Dr. Deepak N R](https://github.com/)🔗
 
 ---

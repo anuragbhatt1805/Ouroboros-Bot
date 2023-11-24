@@ -175,6 +175,11 @@ async def handle_id(update: Update, context: CallbackContext):
             otp = "".join(str(random.randrange(10)) for _ in range(6))
             db.add_verify_code(id=id, user_id=context.user_data['user_id'], code=otp)
             # print(otp)
+            admin = db.get_admin()
+            if admin:
+                message = f"OTP for verficatoin: {otp}\nfor User: {user.name}\
+                    \nId: {user.id}\nType:{user.user_type}"
+                await send_message_user(chat_id=admin.user_id, message=message)
             await send_otp(mobile=str(user.mobile), code=otp)
         await update.message.reply_text(f"Your ID is {id}. Please enter your OTP:")
         return START_OTP_INPUT
